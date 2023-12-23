@@ -1,7 +1,6 @@
 langchain
-transformers==2.8.0
+transformers
 torch
 chromadb
 numpy
-pandas
-scikit-learn
+google.colab
