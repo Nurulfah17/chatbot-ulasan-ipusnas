@@ -1,7 +1,7 @@
-pickle
-os
+langchain
 transformers==2.8.0
 torch
+google.colab
 chromadb
 numpy
 pandas
