@@ -1,0 +1,8 @@
+pickle
+os
+transformers==2.8.0
+torch
+chromadb
+numpy
+pandas
+scikit-learn
