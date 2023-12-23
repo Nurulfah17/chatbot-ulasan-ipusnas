@@ -1,4 +1,4 @@
-from predictor import endpoint, load_model
+from predictor import setup_qa_chain, chat_with_qa_chain
 import streamlit as st
 import numpy as np
 
@@ -10,12 +10,12 @@ st.set_page_config(
 
 # load model
 with st.spinner("Loading our awesome AI 🤩. Please wait ..."):
-	model = load_model()
+	model = setup_qa_chain()
 
 @st.cache_data
 def handle_text(text):
 	# predict
-	prediction = endpoint(text)
+	prediction = chat_with_qa_chain(text)
 	my_array = np.array(prediction)
 	# Convert to string
 	result_str = my_array[0]
