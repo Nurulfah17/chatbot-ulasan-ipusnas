@@ -4,4 +4,4 @@ transformers
 torch
 chromadb
 numpy
-google.colab
+
