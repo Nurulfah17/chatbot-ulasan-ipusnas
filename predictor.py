@@ -19,18 +19,8 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline
 
 def load_quantized_model(model_name):
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_use_double_quant=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16
-    )
-
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        load_in_4bit=True,
-        torch_dtype=torch.bfloat16,
-        quantization_config=None,
         device='cpu'
     )
     return model
