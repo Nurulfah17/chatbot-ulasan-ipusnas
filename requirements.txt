@@ -1,5 +1,4 @@
 pip ==23.3.2
-sqlite3 
 langchain
 transformers
 torch
