@@ -19,7 +19,8 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from transformers import AutoModelForCausalLM, AutoConfig, pipeline
 
 def load_quantized_model(model_name):
-    device = torch.device('cpu')
+    # Cek apakah GPU tersedia
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # Memuat konfigurasi model
     config = AutoConfig.from_pretrained(model_name)
@@ -31,9 +32,8 @@ def load_quantized_model(model_name):
         torch_dtype=torch.bfloat16,
     )
 
-    # Pindahkan model ke perangkat CPU
+    # Pindahkan model ke perangkat yang tersedia (GPU atau CPU)
     model.to(device)
-
     return model
     
 def initialize_tokenizer(model_name):
