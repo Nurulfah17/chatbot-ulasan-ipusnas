@@ -16,32 +16,26 @@ from langchain.prompts import PromptTemplate
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline
+from transformers import AutoModelForCausalLM, AutoConfig, pipeline
 
 def load_quantized_model(model_name):
-    # Check if GPU is available
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device('cpu')
 
-    # Quantization configuration
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_use_double_quant=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16
-    )
+    # Memuat konfigurasi model
+    config = AutoConfig.from_pretrained(model_name)
 
-    # Load the quantized model
+    # Memuat model dengan konfigurasi quantization
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        load_in_4bit=True,
+        config=config,
         torch_dtype=torch.bfloat16,
-        quantization_config=bnb_config,
     )
 
-    # Set the device for the model
+    # Pindahkan model ke perangkat CPU
     model.to(device)
 
     return model
+    
 def initialize_tokenizer(model_name):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     tokenizer.bos_token_id = 1
