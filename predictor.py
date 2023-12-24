@@ -16,14 +16,22 @@ from langchain.prompts import PromptTemplate
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline
+from transformers import AutoModelForCausalLM, AutoConfig, QuantizationConfig
 
 def load_quantized_model(model_name):
     device = torch.device('cpu')
+    config = AutoConfig.from_pretrained(model_name)
+    quantization_config = QuantizationConfig(
+        load_in_4bit=True,
+        torch_dtype=torch.bfloat16
+    )
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        device= device
+        config=config,
+        quantization_config=quantization_config
     )
+
+    model.to(device)
     return model
 
 def initialize_tokenizer(model_name):
