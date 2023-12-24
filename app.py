@@ -39,5 +39,5 @@ if user_review != "":
 	st.subheader("AI thinks that ...")
 
 	# check prediction
-	st.write(result)
+	st.write(prediction)
 
