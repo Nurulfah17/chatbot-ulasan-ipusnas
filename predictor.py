@@ -29,7 +29,6 @@ def load_quantized_model(model_name):
         model_name,
         config=config,
         torch_dtype=torch.bfloat16,
-        load_in_half=True
     )
 
     # Pindahkan model ke perangkat CPU
