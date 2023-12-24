@@ -8,6 +8,9 @@ Original file is located at
 """
 import torch
 import chromadb
+import transformers
+import langchain
+import numpy as np
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Chroma
 from langchain.prompts import PromptTemplate
