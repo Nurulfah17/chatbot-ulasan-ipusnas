@@ -3,12 +3,6 @@ import streamlit as st
 import numpy as np
 
 @st.cache(ttl=24*3600)
-def api_request(query):
-    return api.run(query)
-
-query = st.text_input("Your query for the API")
-result = api_request(query)
-st.write("The API returned:", result)
 
 # set page config
 st.set_page_config(
