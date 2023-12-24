@@ -1,5 +1,7 @@
 pip ==23.3.2
+urllib3>=1.24.2,<2.0
 streamlit
+pysqlite3==0.4.6
 langchain
 transformers
 torch
