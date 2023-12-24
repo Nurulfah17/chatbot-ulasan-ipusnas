@@ -7,7 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1SCl8Hq3zE5zHv_u5oujA2L2JzPOLIt9Y
 """
 import torch
-import chromadb
 import transformers
 import langchain
 import numpy as np
