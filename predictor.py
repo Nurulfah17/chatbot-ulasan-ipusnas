@@ -32,7 +32,8 @@ def load_quantized_model(model_name):
         model_name,
         load_in_4bit=True,
         torch_dtype=torch.bfloat16,
-        quantization_config=bnb_config
+        quantization_config=bnb_config,
+        device = device
     )
     return model
 
