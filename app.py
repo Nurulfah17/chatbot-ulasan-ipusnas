@@ -2,8 +2,6 @@ from predictor import setup_qa_chain, chat_with_qa_chain
 import streamlit as st
 import numpy as np
 
-@st.cache(ttl=24*3600)
-
 # set page config
 st.set_page_config(
 	page_title="Chatbot Ipusnas's Review",
