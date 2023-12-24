@@ -16,21 +16,23 @@ from langchain.prompts import PromptTemplate
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
-from transformers import AutoModelForCausalLM, AutoConfig, QuantizationConfig
+from transformers import AutoModelForCausalLM, AutoConfig, pipeline
 
 def load_quantized_model(model_name):
     device = torch.device('cpu')
+
+    # Memuat konfigurasi model
     config = AutoConfig.from_pretrained(model_name)
-    quantization_config = QuantizationConfig(
-        load_in_4bit=True,
-        torch_dtype=torch.bfloat16
-    )
+
+    # Memuat model dengan konfigurasi quantization
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         config=config,
-        quantization_config=quantization_config
+        torch_dtype=torch.bfloat16,
+        load_in_half=True
     )
 
+    # Pindahkan model ke perangkat CPU
     model.to(device)
     return model
 
