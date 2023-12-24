@@ -7,5 +7,5 @@ transformers
 torch
 chromadb
 numpy
-bitsandbyte
+bitsandbyte == 0.41.3
 
