@@ -19,9 +19,10 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline
 
 def load_quantized_model(model_name):
+    device = torch.device('cpu')
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        **{'device': 'cpu'}
+        device= device
     )
     return model
 
