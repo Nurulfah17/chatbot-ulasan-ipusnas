@@ -16,23 +16,24 @@ from langchain.prompts import PromptTemplate
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
-from transformers import AutoModelForCausalLM, AutoConfig, pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
 def load_quantized_model(model_name):
-    device = torch.device('cpu')
-
-    # Memuat konfigurasi model
-    config = AutoConfig.from_pretrained(model_name)
-
-    # Memuat model dengan konfigurasi quantization
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        config=config,
-        torch_dtype=torch.bfloat16,
+    bnb_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_use_double_quant=True,
+        bnb_4bit_quant_type="nf4",
+        bnb_4bit_compute_dtype=torch.bfloat16
     )
 
-    # Pindahkan model ke perangkat CPU
-    model.to(device)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        load_in_4bit=True,
+        torch_dtype=torch.bfloat16,
+        quantization_config=bnb_config
+    )
     return model
 
 def initialize_tokenizer(model_name):
@@ -54,7 +55,7 @@ def setup_qa_chain():
     stop_token_ids = [0]
 
     # Load data from CSV
-    loader = CSVLoader(file_path='https://drive.google.com/file/d/1fTBrRiyd24I7334L7BdZY5wYpb85zhbm/view?usp=sharing', encoding="unicode_escape", csv_args={'delimiter': ','})
+    loader = CSVLoader(file_path='https://drive.google.com/uc?id=1fTBrRiyd24I7334L7BdZY5wYpb85zhbm&confirm=t', encoding="unicode_escape", csv_args={'delimiter': ','})
     docs = loader.load()
 
     # Split documents
