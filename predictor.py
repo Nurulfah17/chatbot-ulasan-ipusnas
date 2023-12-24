@@ -21,7 +21,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 def load_quantized_model(model_name):
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        device='cpu'
+        **{'device': 'cpu'}
     )
     return model
 
