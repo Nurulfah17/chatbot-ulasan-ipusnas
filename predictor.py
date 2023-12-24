@@ -17,10 +17,12 @@ from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
 
 def load_quantized_model(model_name):
+    # Check if GPU is available
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    # Quantization configuration
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,
@@ -28,15 +30,18 @@ def load_quantized_model(model_name):
         bnb_4bit_compute_dtype=torch.bfloat16
     )
 
+    # Load the quantized model
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         load_in_4bit=True,
         torch_dtype=torch.bfloat16,
         quantization_config=bnb_config,
-        device = device
     )
-    return model
 
+    # Set the device for the model
+    model.to(device)
+
+    return model
 def initialize_tokenizer(model_name):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     tokenizer.bos_token_id = 1
