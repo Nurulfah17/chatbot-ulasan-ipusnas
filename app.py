@@ -11,8 +11,7 @@ st.set_page_config(
 # load model
 with st.spinner("Loading our awesome AI 🤩. Please wait ..."):
 	model = setup_qa_chain()
-if "data" in st.session_state:
-    del st.session_state.data
+
 @st.cache_data
 def handle_text(text):
 	# predict
@@ -41,4 +40,6 @@ if user_review != "":
 
 	# check prediction
 	st.write(prediction)
+if "data" in st.session_state:
+    del st.session_state.data
 
