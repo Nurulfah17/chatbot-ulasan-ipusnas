@@ -12,6 +12,13 @@ st.set_page_config(
 with st.spinner("Loading our awesome AI 🤩. Please wait ..."):
 	model = setup_qa_chain()
 
+def data_generator():
+    for chunk in large_data_source:
+        yield chunk
+
+# Menggunakan generator dalam aplikasi Streamlit
+for data_chunk in data_generator():
+    st.write(data_chunk)
 @st.cache_data
 def handle_text(text):
 	# predict
@@ -22,6 +29,10 @@ def handle_text(text):
 
 	# return
 	return result_str
+
+if "data" in st.session_state:
+    del st.session_state.data
+	
 # title and subtitle
 st.title("📲 Chatbot Ipusnas's Review")
 st.write("It's easy and fast. Put the review down below and we will take care the rest 😉")
@@ -40,6 +51,5 @@ if user_review != "":
 
 	# check prediction
 	st.write(prediction)
-if "data" in st.session_state:
-    del st.session_state.data
+
 
